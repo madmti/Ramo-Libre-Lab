@@ -1,0 +1,27 @@
+.bg-grid-pattern,
+body {
+	background-color: var(--color-base-200);
+	background-image: radial-gradient(var(--color-base-400) 1px, transparent 1px);
+	background-size: 24px 24px;
+}
+
+body {
+	padding: calc(var(--spacing) * 6);
+}
+
+html,
+body {
+	height: 100%;
+	height: 100dvh;
+	margin: 0;
+	overflow: hidden;
+	overscroll-behavior-y: none;
+}
+
+@media (max-width: 640px) {
+	body {
+		padding: 0;
+		height: 100dvh;
+		width: 100vw;
+	}
+}
