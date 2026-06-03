@@ -16,7 +16,7 @@
 </script>
 
 <svelte:head>
-	<title>Ramo Libre Lab</title>
+	<title>RamoLibre LAB</title>
 	<meta name="theme-color" content="#ffffff" id="theme-meta" />
 	<link rel="icon" href={favicon} />
 </svelte:head>
