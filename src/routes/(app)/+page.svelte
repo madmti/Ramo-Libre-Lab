@@ -38,7 +38,7 @@
 </div>
 
 {#if activeTab === 'simular'}
-	<div class="animate-fade-in flex flex-col gap-4 xl:grid xl:grid-cols-12 xl:items-start mb-20">
+	<div class="animate-fade-in mb-20 flex flex-col gap-4 xl:grid xl:grid-cols-12 xl:items-start">
 		<div class="contents xl:col-span-8 xl:flex xl:flex-col xl:gap-4">
 			<div class="order-4 xl:order-0">
 				<Sistema />
