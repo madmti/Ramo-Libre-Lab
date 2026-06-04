@@ -4,9 +4,7 @@
 </script>
 
 <div class="flex shrink-0 flex-col gap-3 rounded-xl border border-base-400 bg-base-200 p-4">
-	<p class="text-xs font-semibold tracking-wide text-content uppercase opacity-60">
-		Apariencia
-	</p>
+	<p class="text-xs font-semibold tracking-wide text-content uppercase opacity-60">Apariencia</p>
 	<div class="grid grid-cols-2 gap-2">
 		{#each themes as opt (opt.id)}
 			<button

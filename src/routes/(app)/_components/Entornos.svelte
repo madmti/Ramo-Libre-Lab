@@ -1,19 +1,36 @@
 <script lang="ts">
 	import { Calendar, Trash2 } from '@lucide/svelte';
+	import { db } from '$lib/state/index.svelte';
 
-	let simulaciones = $state([
-		{ id: '1', nombre: 'INF-134 - Peor Escenario', fecha: '03 Jun 2026', active: true },
-		{ id: '2', nombre: 'Aproximación con Gamma 1.1', fecha: '28 May 2026', active: false },
-		{ id: '3', nombre: 'Simulación Redes de Computadores', fecha: '15 May 2026', active: false }
-	]);
+	let simulaciones = $derived(
+		Array.from(db.simulaciones.all.values()).map((sim) => ({
+			id: sim.id,
+			nombre: sim.name,
+			fecha: formatFecha(sim.date),
+			active: sim.id === db.simulaciones.actual.id
+		}))
+	);
+
+	const dateFormatter = new Intl.DateTimeFormat('es-ES', {
+		day: '2-digit',
+		month: 'short',
+		year: 'numeric'
+	});
+
+	function formatFecha(date: Date | string | null) {
+		if (!date) return 'Sin fecha';
+		const parsed = typeof date === 'string' ? new Date(date) : date;
+		if (Number.isNaN(parsed.getTime())) return 'Sin fecha';
+		return dateFormatter.format(parsed);
+	}
 
 	function handleDeleteEnvironment(id: string, event: Event) {
 		event.stopPropagation();
-		simulaciones = simulaciones.filter((s) => s.id !== id);
+		db.simulaciones.deleteById(id);
 	}
 
 	function handleLoadEnvironment(id: string) {
-		console.log('Cargar entorno con ID:', id);
+		db.simulaciones.loadById(id);
 	}
 </script>
 

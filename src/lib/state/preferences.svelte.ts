@@ -33,12 +33,12 @@ export class PreferencesManager implements Serializable<PreferencesSerial> {
 
 	get theme() {
 		return this._prefs.theme;
-    }
+	}
 
-    set theme(value: Theme) {
-        this._prefs.theme = value;
-        this.applyTheme();
-    }
+	set theme(value: Theme) {
+		this._prefs.theme = value;
+		this.applyTheme();
+	}
 
 	applyTheme() {
 		const root = document.documentElement;

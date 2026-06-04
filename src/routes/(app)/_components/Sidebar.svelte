@@ -1,6 +1,10 @@
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.svg';
 	import { VERSION } from '$lib/utils/version';
+	import { decodeUrlData, encodeUrlData } from '$lib/utils/url_data';
+	import type { Simulacion } from '$lib/state/simulaciones.svelte';
+	import { db } from '$lib/state/index.svelte';
+	import { onMount } from 'svelte';
 	import { Link2, FolderOpen, Settings } from '@lucide/svelte';
 	import Datos from './Datos.svelte';
 	import Apariencia from './Apariencia.svelte';
@@ -8,11 +12,26 @@
 
 	let activeTab = $state<'entornos' | 'config'>('entornos');
 
-	function handleShareLink() {
-		const baseUrl = window.location.origin + window.location.pathname;
-		const dummyUrl = `${baseUrl}?data=eyJnYW1tYSI6MS4xLCJub3RhcyI6WzcwLDYxLDEwLDEwMF19`;
+	onMount(() => {
+		const url = new URL(window.location.href);
+		const payload = url.searchParams.get('share');
+		if (!payload) return;
+		try {
+			const shared = decodeUrlData<Simulacion>(payload);
+			if (shared && shared.id) {
+				db.simulaciones.loadActual(shared);
+			}
+		} catch (error) {
+			console.warn('Sidebar: invalid share payload', error);
+		}
+	});
 
-		navigator.clipboard.writeText(dummyUrl).then(() => {
+	function handleShareLink() {
+		const url = new URL(window.location.href);
+		const payload = encodeUrlData(db.simulaciones.actual);
+		url.searchParams.set('share', payload);
+
+		navigator.clipboard.writeText(url.toString()).then(() => {
 			alert('¡Enlace del entorno copiado al portapapeles!');
 		});
 	}
