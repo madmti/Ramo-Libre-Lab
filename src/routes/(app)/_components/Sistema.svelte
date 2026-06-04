@@ -1,74 +1,81 @@
 <script lang="ts">
-	import { Plus, Trash2, Code, LayoutGrid, Save } from '@lucide/svelte';
+	import { db } from '$lib/state/index.svelte';
+	import { Plus, Trash2, Code, LayoutGrid, Save, Check } from '@lucide/svelte';
+	import katex from 'katex';
+	import 'katex/dist/katex.min.css';
 
-	// 1. ESTADOS INTERNOS DEL COMPONENTE
+	import { parseScript, toLatex, statementDisplayName } from '$lib/utils/compiler';
+	import type {
+		StatementNode,
+		AssignmentStatement,
+		ConstraintStatement
+	} from '$lib/utils/compiler';
 
-	// Control de modo local dentro del tile: 'visual' o 'script'
-	let modoInput = $state<'visual' | 'script'>('visual');
-
-	// Estado para el input de una sola línea (Modo Visual)
+	let modoInput = $state<'visual' | 'script'>(db.simulaciones.actual.modo ?? 'visual');
 	let dslInput = $state('');
+	let scriptInput = $state(db.simulaciones.actual.scriptRaw);
 
-	// Estado para el textarea monolítico (Modo Script)
-	let scriptInput = $state('');
+	let statements = $derived(parseScript(db.simulaciones.actual.scriptRaw));
 
-	// La "Fuente de Verdad" de las ecuaciones.
-	// Vincular esto a db.simulaciones.actual.reglas en producción.
-	let ecuaciones = $state([
-		{ id: '1', raw: 'NF == (C1 + C2)/2 * 0.6 + Cert * 0.4', isTarget: true },
-		{ id: '2', raw: 'C1 >= 55', isTarget: false }
-	]);
+	let renderableStatements = $derived(
+		statements.filter(
+			(s): s is AssignmentStatement | ConstraintStatement =>
+				s.type === 'assignment' || s.type === 'constraint'
+		)
+	);
 
-	// 2. LÓGICA DE HERRAMIENTAS
+	let activeRaw = $state<string>(db.simulaciones.actual.activeStatementRaw ?? '');
 
-	// Cambiar de modo y sincronizar datos
+	let effectiveActiveRaw = $derived.by(() => {
+		const exists = renderableStatements.some((s) => s.raw === activeRaw);
+		if (!exists && renderableStatements.length > 0) {
+			return renderableStatements[0].raw;
+		}
+		return activeRaw;
+	});
+
+	function renderStatement(stmt: StatementNode): string {
+		try {
+			return katex.renderToString(toLatex(stmt), { displayMode: false, throwOnError: true });
+		} catch {
+			return `<span class="text-error-100 font-mono text-xs">Error de sintaxis</span>`;
+		}
+	}
+
 	function setModo(nuevoModo: 'visual' | 'script') {
-		if (nuevoModo === 'script') {
-			// Al pasar a script, poblamos el textarea con la lista actual
-			scriptInput = ecuaciones.map((eq) => eq.raw).join('\n');
-		}
-		// Al volver a visual, no hacemos nada, dependemos de 'handleApplyScript'
+		if (nuevoModo === 'script') scriptInput = db.simulaciones.actual.scriptRaw;
 		modoInput = nuevoModo;
+		db.simulaciones.updateActual({ modo: nuevoModo });
 	}
 
-	// Pequeño helper para parsear strings crudos a objetos de ecuación
-	function parseRawToEcuacion(rawString: string) {
-		const trimmed = rawString.trim();
-		if (!trimmed || trimmed.startsWith('//')) return null; // Ignorar vacíos o comentarios
-
-		return {
-			id: crypto.randomUUID(),
-			raw: trimmed,
-			isTarget: trimmed.includes('NF') // Lógica simple de detección de target
-		};
-	}
-
-	// ACCIÓN VISUAL: Agregar línea por línea
 	function handleAddEcuacion() {
-		const nuevaEq = parseRawToEcuacion(dslInput);
-		if (nuevaEq) {
-			ecuaciones = [...ecuaciones, nuevaEq];
-			dslInput = '';
-		}
+		const trimmed = dslInput.trim();
+		if (!trimmed) return;
+		const currentRaw = db.simulaciones.actual.scriptRaw.trim();
+		const newRaw = currentRaw ? `${currentRaw}\n${trimmed}` : trimmed;
+		db.simulaciones.updateActual({ scriptRaw: newRaw });
+		dslInput = '';
 	}
 
-	// ACCIÓN SCRIPT: Sobrescribir todo el sistema
 	function handleApplyScript() {
-		// Parseamos el bloque completo de texto
-		const lineas = scriptInput.split('\n');
-
-		// Generamos la nueva lista pura filtrando nulos
-		const nuevasEcuaciones = lineas.map(parseRawToEcuacion).filter((eq) => eq !== null);
-
-		// Sobrescribimos la fuente de verdad
-		ecuaciones = nuevasEcuaciones;
-
-		// Opcional: Volver a modo visual tras aplicar
-		// modoInput = 'visual';
+		db.simulaciones.updateActual({ scriptRaw: scriptInput });
 	}
 
 	function handleKeydownVisual(e: KeyboardEvent) {
 		if (e.key === 'Enter') handleAddEcuacion();
+	}
+
+	function handleRemoveStatement(rawLineToRemove: string) {
+		const newRaw = db.simulaciones.actual.scriptRaw
+			.split('\n')
+			.filter((l) => l.trim() !== rawLineToRemove)
+			.join('\n');
+		db.simulaciones.updateActual({ scriptRaw: newRaw });
+	}
+
+	function handleSelectStatement(raw: string) {
+		activeRaw = raw;
+		db.simulaciones.updateActual({ activeStatementRaw: raw });
 	}
 </script>
 
@@ -79,12 +86,11 @@
 		<h3 class="text-xs font-semibold tracking-wide text-content uppercase opacity-60">
 			Sistema de Ecuaciones
 		</h3>
-
 		<div class="flex gap-0.5 rounded-lg bg-base-300 p-0.5 text-xs font-medium">
 			<button
 				onclick={() => setModo('visual')}
-				class="flex cursor-pointer items-center gap-1 rounded-md px-2.5 py-1 transition-all duration-150
-                {modoInput === 'visual'
+				class="flex cursor-pointer items-center gap-1 rounded-md px-2.5 py-1 transition-all duration-150 {modoInput ===
+				'visual'
 					? 'bg-base-100 font-semibold text-content shadow-xs'
 					: 'text-content opacity-50 hover:opacity-100'}"
 			>
@@ -92,8 +98,8 @@
 			</button>
 			<button
 				onclick={() => setModo('script')}
-				class="flex cursor-pointer items-center gap-1 rounded-md px-2.5 py-1 transition-all duration-150
-                {modoInput === 'script'
+				class="flex cursor-pointer items-center gap-1 rounded-md px-2.5 py-1 transition-all duration-150 {modoInput ===
+				'script'
 					? 'bg-base-100 font-semibold text-content shadow-xs'
 					: 'text-content opacity-50 hover:opacity-100'}"
 			>
@@ -109,7 +115,7 @@
 				bind:value={dslInput}
 				onkeydown={handleKeydownVisual}
 				class="flex-1 rounded-lg border border-base-400 bg-base-100 px-4 py-2.5 font-mono text-sm text-content transition-colors placeholder:text-content/30 focus:border-primary-100 focus:outline-none"
-				placeholder="Ej: NF == prom(C1, C2) * 0.6 + Cert * 0.4"
+				placeholder="Ej: NF: 55 <= prom(C1, C2, C3)"
 			/>
 			<button
 				onclick={handleAddEcuacion}
@@ -124,7 +130,7 @@
 				bind:value={scriptInput}
 				spellcheck="false"
 				class="h-48 w-full resize-none scrollbar-thin rounded-lg border border-base-400 bg-base-100 p-4 font-mono text-xs text-content transition-colors focus:border-primary-100 focus:outline-none"
-				placeholder="// Define aquí todo el sistema (dominios, reglas)..."
+				placeholder="// Define el sistema completo aquí&#10;// dominio C1, C2 [0, 100]&#10;// PC = prom(C1, C2)&#10;// NF = PC * 0.6 + Cert * 0.4&#10;// C1 >= 55"
 			></textarea>
 			<button
 				onclick={handleApplyScript}
@@ -136,29 +142,56 @@
 	{/if}
 
 	<div class="mt-2 flex flex-col gap-3">
-		{#each ecuaciones as eq (eq.id)}
+		{#each renderableStatements as stmt, index (index)}
+			{@const isAssignment = stmt.type === 'assignment'}
+			{@const isActive = stmt.raw === effectiveActiveRaw}
+			{@const displayName = statementDisplayName(stmt)}
+
 			<div
-				class="flex flex-col rounded-lg border p-4 transition-colors
-                {eq.isTarget
-					? 'border-primary-100/30 bg-primary-100/5'
-					: 'border-base-400 bg-base-100'}"
+				class="group flex flex-col rounded-lg border p-4 transition-all duration-200 {isActive
+					? 'border-primary-100/50 bg-primary-400/30 shadow-sm'
+					: 'cursor-pointer border-base-400 bg-base-100 hover:border-primary-100/30 hover:bg-primary-400/10'}"
+				onclick={() => handleSelectStatement(stmt.raw)}
+				role="button"
+				tabindex="0"
+				onkeydown={(e) => e.key === 'Enter' && handleSelectStatement(stmt.raw)}
+				aria-pressed={isActive}
+				title="Seleccionar como regla activa"
 			>
 				<div
-					class="flex min-h-11 items-center justify-center py-2 font-serif text-lg text-content italic opacity-90 select-all"
+					class="flex min-h-11 items-center justify-center py-2 text-lg text-content select-all xl:text-xl"
 				>
-					<span class="font-sans text-sm tracking-normal opacity-40"
-						>[ Mini Canvas: KaTeX Render de {eq.isTarget ? 'NF' : 'Restricción'} ]</span
-					>
+					{@html renderStatement(stmt)}
 				</div>
 
 				<div
 					class="mt-2 flex items-center justify-between border-t border-base-400/50 pt-2 font-mono text-xs"
 				>
-					<span class={eq.isTarget ? 'font-semibold text-primary-100' : 'text-content/60'}>
-						{eq.raw}
-					</span>
+					<div class="flex items-center gap-2 overflow-hidden">
+						{#if isActive}
+							<Check size={13} class="shrink-0 text-primary-100" aria-label="Regla activa" />
+						{/if}
+						<span
+							class="truncate {isActive
+								? 'font-semibold text-primary-100'
+								: 'text-content/60 group-hover:text-content/80'}"
+						>
+							{displayName}
+						</span>
+						<span
+							class="shrink-0 rounded px-1.5 py-0.5 text-[9px] font-bold tracking-wider uppercase {isAssignment
+								? 'bg-primary-400/50 text-primary-100'
+								: 'bg-base-400/50 text-content/50'}"
+						>
+							{isAssignment ? 'calc' : 'regla'}
+						</span>
+					</div>
+
 					<button
-						onclick={() => (ecuaciones = ecuaciones.filter((e) => e.id !== eq.id))}
+						onclick={(e) => {
+							e.stopPropagation();
+							handleRemoveStatement(stmt.raw);
+						}}
 						class="cursor-pointer rounded p-1 text-content opacity-30 transition-colors hover:bg-error-100/10 hover:text-error-100 hover:opacity-100"
 						title="Eliminar regla"
 					>
@@ -166,12 +199,15 @@
 					</button>
 				</div>
 			</div>
+		{:else}
+			<div class="py-6 text-center font-mono text-xs text-content/40">
+				Agrega ecuaciones o restricciones para comenzar…
+			</div>
 		{/each}
 	</div>
 </div>
 
 <style>
-	/* Pequeña animación de entrada para suavizar el cambio de input */
 	@keyframes fadeIn {
 		from {
 			opacity: 0;

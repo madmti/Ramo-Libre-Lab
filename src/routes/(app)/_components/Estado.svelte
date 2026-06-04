@@ -1,13 +1,106 @@
 <script lang="ts">
-	// Fuente de verdad del estado de restricciones
-	let restriccionesEstado = $state([
-		{ id: '1', dsl: 'C1 >= 55', cumplido: true },
-		{ id: '2', dsl: 'Cert >= 60', cumplido: true },
-		{ id: '3', dsl: 'prom(C1, C2) >= 55', cumplido: true } // Ejemplo de regla rota
-	]);
+	import { db } from '$lib/state/index.svelte';
+	import {
+		parseScript,
+		evaluate,
+		evaluateExpression,
+		buildEvalContext,
+		statementDisplayName
+	} from '$lib/utils/compiler';
+	import type { ASTNode, AssignmentStatement, ConstraintStatement } from '$lib/utils/compiler';
 
-	let isFactible = $derived(restriccionesEstado.every((r) => r.cumplido));
-	let nfProyectada = $state(82.4);
+	let statements = $derived(parseScript(db.simulaciones.actual.scriptRaw));
+	let variables = $derived(db.simulaciones.actual.variables);
+
+	let activeRaw = $derived(db.simulaciones.actual.activeStatementRaw ?? '');
+
+	let activeStatement = $derived(
+		statements.find(
+			(s): s is AssignmentStatement | ConstraintStatement =>
+				(s.type === 'assignment' || s.type === 'constraint') && s.raw === activeRaw
+		) ??
+			statements.find((s): s is AssignmentStatement => s.type === 'assignment') ??
+			null
+	);
+
+	function handleSelectStatement(raw: string) {
+		db.simulaciones.updateActual({ activeStatementRaw: raw });
+	}
+
+	function evalNode(node: ASTNode, ctx: Record<string, number>): number {
+		return evaluateExpression(node, [], ctx);
+	}
+
+	let valorProyectado = $derived.by((): number => {
+		if (!activeStatement) return 0;
+		try {
+			const ctx = buildEvalContext(statements, variables);
+			if (activeStatement.type === 'assignment') return evalNode(activeStatement.expression, ctx);
+			return evalNode(activeStatement.left, ctx);
+		} catch {
+			return 0;
+		}
+	});
+
+	let activeLabel = $derived(
+		activeStatement ? statementDisplayName(activeStatement) : 'Sin regla activa'
+	);
+
+	let renderableStatements = $derived(
+		statements.filter(
+			(s): s is AssignmentStatement | ConstraintStatement =>
+				s.type === 'assignment' || s.type === 'constraint'
+		)
+	);
+
+	let restriccionesEstado = $derived.by(() => {
+		const ctx = buildEvalContext(statements, variables);
+
+		return renderableStatements.map((stmt, index) => {
+			const isConstraint = stmt.type === 'constraint';
+
+			const cumplido = (() => {
+				if (!isConstraint) return true;
+				try {
+					return Boolean(evaluate(stmt, statements, variables));
+				} catch {
+					return false;
+				}
+			})();
+
+			const valorActual = (() => {
+				try {
+					return isConstraint ? evalNode(stmt.left, ctx) : evalNode(stmt.expression, ctx);
+				} catch {
+					return 0;
+				}
+			})();
+
+			const umbral = (() => {
+				if (!isConstraint) return null;
+				try {
+					return evalNode(stmt.right, ctx);
+				} catch {
+					return null;
+				}
+			})();
+
+			return {
+				id: index,
+				stmt,
+				label: statementDisplayName(stmt),
+				isConstraint,
+				cumplido,
+				valorActual: Number(valorActual.toFixed(2)),
+				umbral: umbral !== null ? Number(umbral.toFixed(2)) : null,
+				isActive: stmt.raw === activeRaw
+			};
+		});
+	});
+
+	let isFactible = $derived(
+		restriccionesEstado.filter((r) => r.isConstraint).every((r) => r.cumplido)
+	);
 </script>
 
 <div
@@ -32,32 +125,53 @@
 	{/if}
 
 	<div
-		class="mt-1 flex flex-col items-center justify-center border-t border-b border-base-400/50 py-6"
+		class="mt-1 flex flex-col items-center justify-center gap-1 border-t border-b border-base-400/50 py-6"
 	>
-		<span class="font-mono text-sm text-content opacity-50">NF Proyectada</span>
+		<span
+			class="max-w-full truncate px-4 text-center font-mono text-[10px] tracking-widest text-content/40 uppercase"
+		>
+			{activeLabel}
+		</span>
 		<span
 			class="mt-1 text-6xl font-black tracking-tighter transition-all duration-300
-            {isFactible ? 'text-content' : 'text-error-100 opacity-40'}"
+			{isFactible ? 'text-content' : 'text-error-100 opacity-60'}"
 		>
-			{isFactible ? nfProyectada.toFixed(1) : '---'}
+			{valorProyectado.toFixed(1)}
 		</span>
 	</div>
 
-	<div class="mt-1 flex flex-col gap-2">
-		<span class="text-[10px] font-bold tracking-wider text-content uppercase opacity-40"
-			>Verificación de Restricciones</span
-		>
-
-		<div class="flex max-h-36 scrollbar-thin flex-col gap-2 overflow-y-auto pr-0.5">
+	<div class="flex flex-col gap-2">
+		<span class="text-[10px] font-bold tracking-wider text-content uppercase opacity-40">
+			Reglas
+		</span>
+		<div class="flex max-h-52 scrollbar-thin flex-col gap-1.5 overflow-y-auto pr-0.5">
 			{#each restriccionesEstado as res (res.id)}
-				<div
-					class="flex items-center justify-between rounded-lg border px-3 py-2.5 font-mono text-xs transition-all duration-200
-                    {res.cumplido
-						? 'border-base-400/60 bg-base-100/40 text-content opacity-80'
-						: 'border-error-100/40 bg-error-100/10 font-bold text-error-100'}"
+				<button
+					onclick={() => handleSelectStatement(res.stmt.raw)}
+					class="group flex w-full cursor-pointer items-center justify-between rounded-lg border px-3 py-2.5 text-left font-mono text-xs transition-all duration-150
+					{res.isActive
+						? 'border-primary-100/40 bg-primary-400/20 font-semibold text-primary-100'
+						: res.isConstraint && !res.cumplido
+							? 'border-error-100/30 bg-error-100/5 text-error-100 hover:bg-error-100/10'
+							: 'border-base-400/60 bg-base-100/40 text-content opacity-70 hover:bg-base-100 hover:opacity-100'}"
 				>
-					<span class="truncate">{res.dsl}</span>
-				</div>
+					<span class="truncate">{res.label}</span>
+
+					<div class="ml-2 flex shrink-0 items-center gap-2">
+						{#if res.isConstraint && res.umbral !== null}
+							<span class="text-[10px] opacity-60">
+								{res.valorActual}
+								{res.stmt.operator}
+								{res.umbral}
+							</span>
+							<span class="text-sm leading-none">{res.cumplido ? '✓' : '✗'}</span>
+						{:else}
+							<span class="tabular-nums">{res.valorActual}</span>
+						{/if}
+					</div>
+				</button>
+			{:else}
+				<div class="py-2 text-center text-xs font-mono text-content/40">Sin reglas declaradas.</div>
 			{/each}
 		</div>
 	</div>
