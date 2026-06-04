@@ -46,7 +46,7 @@
 			class="shrink-0 rounded-xl border border-dashed border-base-400 bg-base-100/20 p-6 text-center"
 		>
 			<span class="text-sm text-content opacity-40">
-				No hay entornos locales<br />guardados aún
+				No hay simulaciones<br />guardadas aún
 			</span>
 		</div>
 	{:else}

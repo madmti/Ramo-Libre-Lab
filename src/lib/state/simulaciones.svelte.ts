@@ -20,28 +20,8 @@ export type SimulacionKey = string;
 export type SimulacionesSerial = [SimulacionKey, Simulacion][];
 export type Simulaciones = SvelteMap<SimulacionKey, Simulacion>;
 
-const DEMO_SIMULACIONES: Simulaciones = new SvelteMap(
-	[
-		{
-			name: 'INF-134 - Peor Escenario',
-			date: new SvelteDate('2026-06-03')
-		},
-		{
-			name: 'Aproximación con Gamma 1.1',
-			date: new SvelteDate('2026-05-28')
-		},
-		{
-			name: 'Simulación Redes de Computadores',
-			date: new SvelteDate('2026-05-15')
-		}
-	].map((sim, idx) => {
-		const id = (idx + 1).toString();
-		return [id, { ...sim, id }];
-	})
-);
-
 export class SimulacionesManager implements Serializable<SimulacionesSerial> {
-	private _simulaciones = $state<Simulaciones>(new SvelteMap(DEMO_SIMULACIONES));
+	private _simulaciones = $state<Simulaciones>(new SvelteMap());
 	private _actual = $state<Simulacion>(DEFAULT_SIMULACION);
 
 	loadActual(newActual: Simulacion) {
@@ -68,7 +48,7 @@ export class SimulacionesManager implements Serializable<SimulacionesSerial> {
 			}
 			return;
 		}
-		this._simulaciones = new SvelteMap(DEMO_SIMULACIONES);
+		this._simulaciones = new SvelteMap();
 		this._actual = DEFAULT_SIMULACION;
 	}
 
