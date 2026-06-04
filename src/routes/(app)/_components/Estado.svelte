@@ -144,7 +144,7 @@
 		<span class="text-[10px] font-bold tracking-wider text-content uppercase opacity-40">
 			Reglas
 		</span>
-		<div class="flex max-h-52 scrollbar-thin flex-col gap-1.5 overflow-y-auto pr-0.5">
+		<div class="flex max-h-52 flex-col gap-1.5 pr-0.5">
 			{#each restriccionesEstado as res (res.id)}
 				<button
 					onclick={() => handleSelectStatement(res.stmt.raw)}
