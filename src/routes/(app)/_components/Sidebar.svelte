@@ -5,15 +5,17 @@
 	import type { Simulacion } from '$lib/state/simulaciones.svelte';
 	import { db } from '$lib/state/index.svelte';
 	import { onMount } from 'svelte';
-	import { Link2, FolderOpen, Settings } from '@lucide/svelte';
+	import { Link2, FolderOpen, Settings, Check } from '@lucide/svelte'; // Importamos Check
 	import Datos from './Datos.svelte';
 	import Apariencia from './Apariencia.svelte';
 	import Entornos from './Entornos.svelte';
 
-	// Interfaz para recibir la función de cierre del layout (opcional)
 	let { onSelect = () => {} } = $props<{ onSelect?: () => void }>();
 
 	let activeTab = $state<'entornos' | 'config'>('entornos');
+
+	// Runa para controlar la microinteracción de copiado
+	let copied = $state(false);
 
 	onMount(() => {
 		const url = new URL(window.location.href);
@@ -30,12 +32,20 @@
 	});
 
 	function handleShareLink() {
+		// Si ya está en estado animado, evitamos clicks redundantes
+		if (copied) return;
+
 		const url = new URL(window.location.href);
 		const payload = encodeUrlData(db.simulaciones.actual);
 		url.searchParams.set('share', payload);
 
 		navigator.clipboard.writeText(url.toString()).then(() => {
-			alert('¡Enlace del entorno copiado al portapapeles!');
+			copied = true;
+
+			// Retornar al estado original tras 2 segundos
+			setTimeout(() => {
+				copied = false;
+			}, 2000);
 		});
 	}
 </script>
@@ -81,9 +91,22 @@
 
 		<button
 			onclick={handleShareLink}
-			class="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary-100 p-2.5 text-center text-sm font-semibold text-white transition-all hover:opacity-90 active:scale-[0.99]"
+			class="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg p-2.5 text-center text-sm font-semibold transition-all duration-300 active:scale-[0.99]
+            {copied
+				? 'bg-success-100 text-white opacity-100'
+				: 'bg-primary-100 text-white hover:opacity-90'}"
 		>
-			<Link2 size={15} /> Compartir Actual
+			{#if copied}
+				<div class="animate-scale-in flex items-center gap-2">
+					<Check size={15} />
+					<span>¡Copiado con éxito!</span>
+				</div>
+			{:else}
+				<div class="flex items-center gap-2">
+					<Link2 size={15} />
+					<span>Compartir Actual</span>
+				</div>
+			{/if}
 		</button>
 	</div>
 
