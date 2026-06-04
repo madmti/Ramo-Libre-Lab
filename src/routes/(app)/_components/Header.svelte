@@ -1,0 +1,79 @@
+<script lang="ts">
+	import { db } from '$lib/state/index.svelte';
+	import { Save, Calendar } from '@lucide/svelte';
+
+	let nombreSimulacion = $state('');
+	let fechaSimulacion = $state('');
+
+	const dateFormatter = new Intl.DateTimeFormat('es-ES', {
+		day: '2-digit',
+		month: 'short',
+		year: 'numeric'
+	});
+
+	function formatFecha(date: Date | string | null) {
+		if (!date) return 'Sin fecha';
+		const parsed = typeof date === 'string' ? new Date(date) : date;
+		if (Number.isNaN(parsed.getTime())) return 'Sin fecha';
+		return dateFormatter.format(parsed);
+	}
+
+	$effect(() => {
+		nombreSimulacion = db.simulaciones.actual.name;
+		fechaSimulacion = formatFecha(db.simulaciones.actual.date);
+	});
+
+	function handleBlur(event: FocusEvent) {
+		const target = event.target as HTMLHeadingElement;
+		const nuevoNombre = target.innerText.trim();
+
+		if (nuevoNombre) {
+			nombreSimulacion = nuevoNombre;
+			db.simulaciones.updateActual({
+				name: nuevoNombre
+			});
+		} else {
+			target.innerText = nombreSimulacion;
+		}
+	}
+
+	function handleKeydown(event: KeyboardEvent) {
+		if (event.key === 'Enter') {
+			event.preventDefault();
+			(event.target as HTMLHeadingElement).blur();
+		}
+	}
+
+	function handleSave() {
+		db.simulaciones.saveActual();
+	}
+</script>
+
+<div
+	class="flex items-center justify-between rounded-xl border border-base-400 bg-base-200 p-5 font-sans text-content shadow-sm"
+>
+	<div class="flex min-w-3/5 flex-col gap-1.5">
+		<h1
+			contenteditable="true"
+			onblur={handleBlur}
+			onkeydown={handleKeydown}
+			class="w-full text-lg font-bold tracking-tight text-content transition-colors outline-none focus:border-b focus:border-primary-100/30 focus:text-primary-100"
+			spellcheck="false"
+		>
+			{nombreSimulacion}
+		</h1>
+
+		<div class="flex items-center gap-1.5 font-mono text-[11px] text-content opacity-50">
+			<Calendar size={12} class="opacity-70" />
+			{fechaSimulacion}
+		</div>
+	</div>
+
+	<button
+		onclick={handleSave}
+		class="flex cursor-pointer items-center justify-center gap-2 rounded-lg bg-content px-4 py-2 text-sm font-semibold text-base-100 transition-all hover:opacity-90 active:scale-[0.98]"
+	>
+		<Save size={15} />
+		<span>Guardar</span>
+	</button>
+</div>

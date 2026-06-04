@@ -42,7 +42,7 @@
 		<Sidebar onSelect={() => (isMobileMenuOpen = false)} />
 	</div>
 
-	<main class="h-screen w-full overflow-y-auto p-4 sm:p-6 md:p-8">
+	<main class="h-screen w-full overflow-y-auto p-6">
 		{@render children()}
 	</main>
 </div>

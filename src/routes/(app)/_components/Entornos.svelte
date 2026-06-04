@@ -72,7 +72,7 @@
 
 					<button
 						onclick={(e) => handleDeleteEnvironment(sim.id, e)}
-						class="absolute top-3.5 right-3.5 rounded-md p-1.5 text-content sm:opacity-0 transition-all group-hover:opacity-60 hover:bg-error-100/10 hover:text-error-100 hover:opacity-100"
+						class="absolute top-3.5 right-3.5 rounded-md p-1.5 text-content transition-all group-hover:opacity-60 hover:bg-error-100/10 hover:text-error-100 hover:opacity-100 sm:opacity-0"
 						title="Eliminar simulación"
 					>
 						<Trash2 size={16} />

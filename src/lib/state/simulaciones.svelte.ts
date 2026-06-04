@@ -5,13 +5,15 @@ import { SvelteDate, SvelteMap } from 'svelte/reactivity';
 export interface Simulacion {
 	id: string;
 	name: string;
-	date: Date | null;
+	date: Date;
 }
 
+const NO_USABLE_ID = 'FAKE_ID_DONT_SAVE';
+
 const DEFAULT_SIMULACION: Simulacion = {
-	id: 'FAKE_ID_DONT_SAVE',
-	name: 'Simulacion 0',
-	date: null
+	id: NO_USABLE_ID,
+	name: 'Nueva Simulacion',
+	date: new Date()
 };
 
 export type SimulacionKey = string;
@@ -38,24 +40,36 @@ const DEMO_SIMULACIONES: Simulaciones = new SvelteMap(
 	})
 );
 
-const DEMO_ACTUAL = DEMO_SIMULACIONES.values().next().value ?? DEFAULT_SIMULACION;
-
 export class SimulacionesManager implements Serializable<SimulacionesSerial> {
 	private _simulaciones = $state<Simulaciones>(new SvelteMap(DEMO_SIMULACIONES));
-	private _actual = $state<Simulacion>(DEMO_ACTUAL);
+	private _actual = $state<Simulacion>(DEFAULT_SIMULACION);
 
 	loadActual(newActual: Simulacion) {
-		this._actual = newActual;
+		this._actual = {
+			...newActual,
+			id: NO_USABLE_ID
+		};
+	}
+
+	updateActual(updates: Partial<Simulacion>) {
+		this._actual = {
+			...this._actual,
+			...updates,
+			id: NO_USABLE_ID
+		};
 	}
 
 	fromSerial(json: SimulacionesSerial): void {
 		if (json && json.length > 0) {
 			this._simulaciones = new SvelteMap(json);
-			this._actual = this._simulaciones.values().next().value ?? DEFAULT_SIMULACION;
+			if (this._actual.id !== DEFAULT_SIMULACION.id) {
+				const existing = this._simulaciones.get(this._actual.id);
+				if (existing) this._actual = existing;
+			}
 			return;
 		}
 		this._simulaciones = new SvelteMap(DEMO_SIMULACIONES);
-		this._actual = DEMO_ACTUAL;
+		this._actual = DEFAULT_SIMULACION;
 	}
 
 	toSerial(): SimulacionesSerial {
@@ -85,6 +99,7 @@ export class SimulacionesManager implements Serializable<SimulacionesSerial> {
 			date: new SvelteDate()
 		};
 		this._simulaciones.set(toSave.id, toSave);
+		this._actual = toSave;
 	}
 
 	loadById(id: string) {

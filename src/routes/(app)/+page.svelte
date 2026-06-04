@@ -1,3 +1,5 @@
-<span class="flex h-screen flex-col items-center justify-center">
-	<p>En construccion..</p>
-</span>
+<script lang="ts">
+	import Header from './_components/Header.svelte';
+</script>
+
+<Header />
