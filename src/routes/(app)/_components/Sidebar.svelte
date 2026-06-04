@@ -10,6 +10,9 @@
 	import Apariencia from './Apariencia.svelte';
 	import Entornos from './Entornos.svelte';
 
+	// Interfaz para recibir la función de cierre del layout (opcional)
+	let { onSelect = () => {} } = $props<{ onSelect?: () => void }>();
+
 	let activeTab = $state<'entornos' | 'config'>('entornos');
 
 	onMount(() => {
@@ -38,7 +41,7 @@
 </script>
 
 <div
-	class="box-border flex h-screen max-h-screen w-85 flex-col gap-5 overflow-hidden p-6 select-none"
+	class="box-border flex h-screen max-h-screen w-screen max-w-85 flex-col gap-5 overflow-hidden p-6 select-none md:bg-transparent"
 >
 	<div class="flex shrink-0 flex-col gap-4 rounded-xl border border-base-400 bg-base-200 p-4">
 		<div class="flex items-center justify-between">
@@ -85,7 +88,9 @@
 	</div>
 
 	{#if activeTab === 'entornos'}
-		<Entornos />
+		<div onclick={onSelect} role="presentation" class="flex min-h-0 flex-1 flex-col">
+			<Entornos />
+		</div>
 	{:else if activeTab === 'config'}
 		<div class="flex min-h-0 flex-1 scrollbar-thin flex-col gap-4 overflow-y-auto pr-1">
 			<Apariencia />
