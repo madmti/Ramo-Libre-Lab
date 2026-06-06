@@ -13,7 +13,7 @@
 
 <Header />
 
-<div class="my-4 flex w-full max-w-sm justify-between">
+<div class="my-4 flex w-full md:max-w-sm">
 	<div class="flex flex-1 gap-1 rounded-lg bg-base-300 p-1 text-sm font-medium">
 		<button
 			onclick={() => (activeTab = 'simular')}
@@ -34,7 +34,6 @@
 			<BookOpen size={16} /> Sintaxis
 		</button>
 	</div>
-	<span> </span>
 </div>
 
 {#if activeTab === 'simular'}
