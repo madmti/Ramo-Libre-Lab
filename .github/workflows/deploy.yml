@@ -20,6 +20,21 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Resolve version tag
+        id: get_version
+        run: |
+          git fetch --tags --force
+          VERSION_TAG=$(git tag --list "v*" --sort=-v:refname | head -n 1)
+
+          if [ -z "$VERSION_TAG" ]; then
+            VERSION_TAG="vX.X.X"
+          fi
+
+          VERSION_NO_V=${VERSION_TAG#v}
+
+          echo "VERSION_NO_V=${VERSION_NO_V}" >> "$GITHUB_ENV"
+          echo "Resolved version tag: $VERSION_TAG"
+
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
@@ -27,6 +42,9 @@ jobs:
 
       - name: Install Dependencies
         run: bun install --frozen-lockfile
+
+      - name: Update version files
+        run: bun scripts/update-version.js ${{ env.VERSION_NO_V }}
 
       - name: Build
         run: bun run build

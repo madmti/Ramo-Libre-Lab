@@ -1,7 +1,7 @@
 {
 	"name": "ramo-libre-lab",
 	"private": true,
-	"version": "0.0.1",
+	"version": "X.X.X",
 	"type": "module",
 	"scripts": {
 		"dev": "vite dev",
