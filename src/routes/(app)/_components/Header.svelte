@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { db } from '$lib/state/index.svelte';
-	import { Save, Calendar } from '@lucide/svelte';
+	import { Save, Calendar, Plus } from '@lucide/svelte';
 
 	let nombreSimulacion = $state('');
 	let fechaSimulacion = $state('');
@@ -44,15 +44,19 @@
 		}
 	}
 
+	function handleNew() {
+		db.simulaciones.resetActual();
+	}
+
 	function handleSave() {
 		db.simulaciones.saveActual();
 	}
 </script>
 
 <div
-	class="flex items-center justify-between rounded-xl border border-base-400 bg-base-200 p-5 font-sans text-content shadow-sm"
+	class="flex flex-col gap-4 rounded-xl border border-base-400 bg-base-200 p-5 font-sans text-content shadow-sm sm:flex-row sm:items-center sm:justify-between"
 >
-	<div class="flex min-w-3/5 flex-col gap-1.5">
+	<div class="flex w-full flex-col gap-1.5 sm:max-w-3/5">
 		<h1
 			contenteditable="true"
 			onblur={handleBlur}
@@ -69,11 +73,21 @@
 		</div>
 	</div>
 
-	<button
-		onclick={handleSave}
-		class="flex cursor-pointer items-center justify-center gap-2 rounded-lg bg-content px-4 py-2 text-sm font-semibold text-base-100 transition-all hover:opacity-90 active:scale-[0.98]"
-	>
-		<Save size={15} />
-		<span>Guardar</span>
-	</button>
+	<div class="flex w-full items-center gap-2 sm:w-auto">
+		<button
+			onclick={handleNew}
+			class="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border border-base-400 bg-base-300 px-4 py-2 text-sm font-semibold text-content transition-all hover:bg-base-400/40 active:scale-[0.98] sm:flex-none"
+		>
+			<Plus size={15} />
+			<span>Nueva</span>
+		</button>
+
+		<button
+			onclick={handleSave}
+			class="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg bg-content px-4 py-2 text-sm font-semibold text-base-100 transition-all hover:opacity-90 active:scale-[0.98] sm:flex-none"
+		>
+			<Save size={15} />
+			<span>Guardar</span>
+		</button>
+	</div>
 </div>
