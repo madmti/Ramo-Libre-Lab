@@ -9,6 +9,7 @@
 	import Datos from './Datos.svelte';
 	import Apariencia from './Apariencia.svelte';
 	import Entornos from './Entornos.svelte';
+	import SourceCode from './SourceCode.svelte';
 
 	let { onSelect = () => {} } = $props<{ onSelect?: () => void }>();
 
@@ -51,15 +52,22 @@
 </script>
 
 <div
-	class="box-border flex h-screen max-h-screen w-screen max-w-85 flex-col gap-5 overflow-hidden p-6 select-none md:bg-transparent"
+	class="box-border flex h-screen max-h-screen w-screen md:max-w-85 flex-col gap-5 overflow-hidden p-6 select-none md:bg-transparent"
 >
 	<div class="flex shrink-0 flex-col gap-4 rounded-xl border border-base-400 bg-base-200 p-4">
-		<div class="flex items-center justify-between">
-			<div class="flex items-center gap-2.5">
-				<img src={favicon} alt="Logo" class="h-6 w-6" />
-				<h2 class="text-base font-bold tracking-normal text-content">
+	<div class="flex items-center gap-3">
+		<div
+			class="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg border border-base-400 bg-base-300 p-2"
+		>
+			<img src={favicon} alt="RamoLibre Logo" class="h-5 w-5 object-contain" />
+		</div>
+
+		<div class="flex min-w-0 flex-1 justify-between items-center">
+			<div class="flex flex-col justify-center">
+				<h4 class="truncate text-base font-bold tracking-tight text-content">
 					RamoLibre <span class="font-extrabold text-primary-100">LAB</span>
-				</h2>
+				</h4>
+				<span class="mt-0.5 text-[10px] font-medium opacity-40">Open Source Sandbox</span>
 			</div>
 			<span
 				class="rounded-md border border-base-400 bg-base-300 px-2 py-0.5 font-mono text-[11px] font-semibold text-content opacity-70"
@@ -67,6 +75,7 @@
 				{VERSION}
 			</span>
 		</div>
+	</div>
 
 		<div class="flex gap-1 rounded-lg bg-base-300 p-1 text-sm font-medium">
 			<button
@@ -118,6 +127,7 @@
 		<div class="flex min-h-0 flex-1 scrollbar-thin flex-col gap-4 overflow-y-auto pr-1">
 			<Apariencia />
 			<Datos />
+			<SourceCode />
 		</div>
 	{/if}
 </div>
