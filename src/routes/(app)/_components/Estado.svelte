@@ -27,6 +27,7 @@
 		db.simulaciones.updateActual({ activeStatementRaw: raw });
 	}
 
+	// evaluateExpression ya maneja errores internamente y retorna 0 en caso de fallo
 	function evalNode(node: ASTNode, ctx: Record<string, number>): number {
 		return evaluateExpression(node, [], ctx);
 	}
@@ -91,6 +92,8 @@
 				label: statementDisplayName(stmt),
 				isConstraint,
 				cumplido,
+				// toFixed(2) en el punto de display, nunca antes — el Decimal ya garantizó
+				// que valorActual es un número JS sin basura de IEEE 754 acumulada
 				valorActual: Number(valorActual.toFixed(2)),
 				umbral: umbral !== null ? Number(umbral.toFixed(2)) : null,
 				isActive: stmt.raw === activeRaw
@@ -144,7 +147,7 @@
 		<span class="text-[10px] font-bold tracking-wider text-content uppercase opacity-40">
 			Reglas
 		</span>
-		<div class="flex max-h-52 flex-col gap-1.5 pr-0.5">
+		<div class="flex flex-col gap-1.5">
 			{#each restriccionesEstado as res (res.id)}
 				<button
 					onclick={() => handleSelectStatement(res.stmt.raw)}

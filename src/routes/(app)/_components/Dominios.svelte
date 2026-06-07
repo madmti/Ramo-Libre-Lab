@@ -20,15 +20,16 @@
 
 <div class="flex flex-col gap-4 rounded-xl border border-base-400 bg-base-200 p-5 shadow-sm">
 	<h3 class="text-xs font-bold tracking-wide text-content uppercase opacity-60">Dominios</h3>
-
 	<div class="flex flex-col gap-2">
 		{#each lineasDominios as dom (dom.raw)}
 			{@const isDecimal = !Number.isInteger(dom.min) || !Number.isInteger(dom.max)}
-
 			<div
 				class="flex items-center justify-between rounded-lg border border-dashed border-base-400 bg-base-100/50 p-3"
 			>
 				<div class="flex flex-col gap-0.5">
+					{#if dom.label}
+						<span class="font-mono text-[10px] font-semibold text-primary-100">{dom.label}</span>
+					{/if}
 					<span class="font-mono text-xs text-content">
 						{dom.variables.join(', ')}
 						<span class="font-bold text-primary-100">∈</span>
