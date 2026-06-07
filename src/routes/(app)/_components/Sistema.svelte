@@ -159,7 +159,7 @@
 				title="Seleccionar como regla activa"
 			>
 				<div
-					class="flex min-h-11 items-center justify-center py-2 text-lg text-content select-all xl:text-xl"
+					class="flex min-h-11 items-center justify-center py-2 text-lg text-content xl:text-xl pointer-events-none select-none"
 				>
 					{@html renderStatement(stmt)}
 				</div>
