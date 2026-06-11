@@ -4,12 +4,12 @@
 	import katex from 'katex';
 	import 'katex/dist/katex.min.css';
 
-	import { parseScript, toLatex, statementDisplayName } from '$lib/utils/compiler';
+	import { parseScript, toLatex, statementDisplayName } from '@ramolibre/core/dsl-parser';
 	import type {
 		StatementNode,
 		AssignmentStatement,
 		ConstraintStatement
-	} from '$lib/utils/compiler';
+	} from '@ramolibre/core/dsl-parser';
 
 	let modoInput = $state<'visual' | 'script'>(db.simulaciones.actual.modo ?? 'visual');
 	let dslInput = $state('');
@@ -80,18 +80,18 @@
 </script>
 
 <div
-	class="flex flex-col gap-4 rounded-xl border border-base-400 bg-base-200 p-5 shadow-sm transition-all duration-300"
+	class="border-base-400 bg-base-200 flex flex-col gap-4 rounded-xl border p-5 shadow-sm transition-all duration-300"
 >
 	<div class="flex items-center justify-between pb-1">
-		<h3 class="text-xs font-semibold tracking-wide text-content uppercase opacity-60">
+		<h3 class="text-content text-xs font-semibold tracking-wide uppercase opacity-60">
 			Sistema de Ecuaciones
 		</h3>
-		<div class="flex gap-0.5 rounded-lg bg-base-300 p-0.5 text-xs font-medium">
+		<div class="bg-base-300 flex gap-0.5 rounded-lg p-0.5 text-xs font-medium">
 			<button
 				onclick={() => setModo('visual')}
 				class="flex cursor-pointer items-center gap-1 rounded-md px-2.5 py-1 transition-all duration-150 {modoInput ===
 				'visual'
-					? 'bg-base-100 font-semibold text-content shadow-xs'
+					? 'bg-base-100 text-content font-semibold shadow-xs'
 					: 'text-content opacity-50 hover:opacity-100'}"
 			>
 				<LayoutGrid size={13} /> Visual
@@ -100,7 +100,7 @@
 				onclick={() => setModo('script')}
 				class="flex cursor-pointer items-center gap-1 rounded-md px-2.5 py-1 transition-all duration-150 {modoInput ===
 				'script'
-					? 'bg-base-100 font-semibold text-content shadow-xs'
+					? 'bg-base-100 text-content font-semibold shadow-xs'
 					: 'text-content opacity-50 hover:opacity-100'}"
 			>
 				<Code size={13} /> Script
@@ -114,12 +114,12 @@
 				type="text"
 				bind:value={dslInput}
 				onkeydown={handleKeydownVisual}
-				class="flex-1 rounded-lg border border-base-400 bg-base-100 px-4 py-2.5 font-mono text-sm text-content transition-colors placeholder:text-content/30 focus:border-primary-100 focus:outline-none"
+				class="border-base-400 bg-base-100 text-content placeholder:text-content/30 focus:border-primary-100 flex-1 rounded-lg border px-4 py-2.5 font-mono text-sm transition-colors focus:outline-none"
 				placeholder="Ej: NF: 55 <= prom(C1, C2, C3)"
 			/>
 			<button
 				onclick={handleAddEcuacion}
-				class="flex cursor-pointer items-center justify-center gap-2 rounded-lg bg-content px-4 text-sm font-bold text-base-100 transition-all hover:opacity-90 active:scale-95"
+				class="bg-content text-base-100 flex cursor-pointer items-center justify-center gap-2 rounded-lg px-4 text-sm font-bold transition-all hover:opacity-90 active:scale-95"
 			>
 				<Plus size={16} /> Agregar
 			</button>
@@ -129,12 +129,12 @@
 			<textarea
 				bind:value={scriptInput}
 				spellcheck="false"
-				class="h-48 w-full resize-none scrollbar-thin rounded-lg border border-base-400 bg-base-100 p-4 font-mono text-xs text-content transition-colors focus:border-primary-100 focus:outline-none"
+				class="border-base-400 bg-base-100 text-content focus:border-primary-100 h-48 w-full resize-none scrollbar-thin rounded-lg border p-4 font-mono text-xs transition-colors focus:outline-none"
 				placeholder="// Define el sistema completo aquí&#10;// dominio C1, C2 [0, 100]&#10;// PC = prom(C1, C2)&#10;// NF = PC * 0.6 + Cert * 0.4&#10;// C1 >= 55"
 			></textarea>
 			<button
 				onclick={handleApplyScript}
-				class="flex w-full cursor-pointer items-center justify-center rounded-lg bg-content p-2.5 text-sm font-bold text-base-100 transition-all hover:opacity-90 active:scale-95"
+				class="bg-content text-base-100 flex w-full cursor-pointer items-center justify-center rounded-lg p-2.5 text-sm font-bold transition-all hover:opacity-90 active:scale-95"
 			>
 				<Save size={16} class="mr-2" /> Aplicar
 			</button>
@@ -150,7 +150,7 @@
 			<div
 				class="group flex flex-col rounded-lg border p-4 transition-all duration-200 {isActive
 					? 'border-primary-100/50 bg-primary-400/30 shadow-sm'
-					: 'cursor-pointer border-base-400 bg-base-100 hover:border-primary-100/30 hover:bg-primary-400/10'}"
+					: 'border-base-400 bg-base-100 hover:border-primary-100/30 hover:bg-primary-400/10 cursor-pointer'}"
 				onclick={() => handleSelectStatement(stmt.raw)}
 				role="button"
 				tabindex="0"
@@ -159,21 +159,21 @@
 				title="Seleccionar como regla activa"
 			>
 				<div
-					class="flex min-h-11 items-center justify-center py-2 text-lg text-content xl:text-xl pointer-events-none select-none"
+					class="text-content pointer-events-none flex min-h-11 items-center justify-center py-2 text-lg select-none xl:text-xl"
 				>
 					{@html renderStatement(stmt)}
 				</div>
 
 				<div
-					class="mt-2 flex items-center justify-between border-t border-base-400/50 pt-2 font-mono text-xs"
+					class="border-base-400/50 mt-2 flex items-center justify-between border-t pt-2 font-mono text-xs"
 				>
 					<div class="flex items-center gap-2 overflow-hidden">
 						{#if isActive}
-							<Check size={13} class="shrink-0 text-primary-100" aria-label="Regla activa" />
+							<Check size={13} class="text-primary-100 shrink-0" aria-label="Regla activa" />
 						{/if}
 						<span
 							class="truncate {isActive
-								? 'font-semibold text-primary-100'
+								? 'text-primary-100 font-semibold'
 								: 'text-content/60 group-hover:text-content/80'}"
 						>
 							{displayName}
@@ -192,7 +192,7 @@
 							e.stopPropagation();
 							handleRemoveStatement(stmt.raw);
 						}}
-						class="cursor-pointer rounded p-1 text-content opacity-30 transition-colors hover:bg-error-100/10 hover:text-error-100 hover:opacity-100"
+						class="text-content hover:bg-error-100/10 hover:text-error-100 cursor-pointer rounded p-1 opacity-30 transition-colors hover:opacity-100"
 						title="Eliminar regla"
 					>
 						<Trash2 size={13} />

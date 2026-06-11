@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { db } from '$lib/state/index.svelte';
-	import { parseScript } from '$lib/utils/compiler';
-	import type { DomainStatement } from '$lib/utils/compiler';
+	import { parseScript } from '@ramolibre/core/dsl-parser';
+	import type { DomainStatement } from '@ramolibre/core/dsl-parser';
 	import { Trash2 } from '@lucide/svelte';
 
 	let statements = $derived(parseScript(db.simulaciones.actual.scriptRaw));
@@ -18,30 +18,30 @@
 	}
 </script>
 
-<div class="flex flex-col gap-4 rounded-xl border border-base-400 bg-base-200 p-5 shadow-sm">
-	<h3 class="text-xs font-bold tracking-wide text-content uppercase opacity-60">Dominios</h3>
+<div class="border-base-400 bg-base-200 flex flex-col gap-4 rounded-xl border p-5 shadow-sm">
+	<h3 class="text-content text-xs font-bold tracking-wide uppercase opacity-60">Dominios</h3>
 	<div class="flex flex-col gap-2">
 		{#each lineasDominios as dom (dom.raw)}
 			{@const isDecimal = !Number.isInteger(dom.min) || !Number.isInteger(dom.max)}
 			<div
-				class="flex items-center justify-between rounded-lg border border-dashed border-base-400 bg-base-100/50 p-3"
+				class="border-base-400 bg-base-100/50 flex items-center justify-between rounded-lg border border-dashed p-3"
 			>
 				<div class="flex flex-col gap-0.5">
 					{#if dom.label}
-						<span class="font-mono text-[10px] font-semibold text-primary-100">{dom.label}</span>
+						<span class="text-primary-100 font-mono text-[10px] font-semibold">{dom.label}</span>
 					{/if}
-					<span class="font-mono text-xs text-content">
+					<span class="text-content font-mono text-xs">
 						{dom.variables.join(', ')}
-						<span class="font-bold text-primary-100">∈</span>
+						<span class="text-primary-100 font-bold">∈</span>
 						[{dom.min}, {dom.max}]
 					</span>
 					{#if isDecimal}
-						<span class="font-mono text-[9px] text-content/40">paso: 0.1</span>
+						<span class="text-content/40 font-mono text-[9px]">paso: 0.1</span>
 					{/if}
 				</div>
 				<button
 					onclick={() => handleRemoveDominio(dom.raw)}
-					class="cursor-pointer text-xs text-error-100 opacity-60 transition-opacity hover:opacity-100"
+					class="text-error-100 cursor-pointer text-xs opacity-60 transition-opacity hover:opacity-100"
 					title="Eliminar dominio"
 					aria-label="Eliminar dominio"
 				>

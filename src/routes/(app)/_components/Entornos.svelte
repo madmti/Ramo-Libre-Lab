@@ -36,16 +36,16 @@
 
 <div class="flex min-h-0 flex-1 flex-col gap-2">
 	<p
-		class="mb-1 block shrink-0 px-1 text-xs font-semibold tracking-wide text-content uppercase opacity-60"
+		class="text-content mb-1 block shrink-0 px-1 text-xs font-semibold tracking-wide uppercase opacity-60"
 	>
 		Simulaciones Guardadas
 	</p>
 
 	{#if simulaciones.length === 0}
 		<div
-			class="shrink-0 rounded-xl border border-dashed border-base-400 bg-base-100/20 p-6 text-center"
+			class="border-base-400 bg-base-100/20 shrink-0 rounded-xl border border-dashed p-6 text-center"
 		>
-			<span class="text-sm text-content opacity-40">
+			<span class="text-content text-sm opacity-40">
 				No hay simulaciones<br />guardadas aún
 			</span>
 		</div>
@@ -64,15 +64,15 @@
 						? 'border-primary-100 bg-base-100 shadow-sm'
 						: 'border-base-400 bg-base-200 hover:border-base-400/80 hover:bg-base-100'}"
 				>
-					<div class="truncate pr-7 text-sm font-bold text-content">{sim.nombre}</div>
-					<div class="flex items-center gap-1.5 font-mono text-[11px] text-content opacity-50">
+					<div class="text-content truncate pr-7 text-sm font-bold">{sim.nombre}</div>
+					<div class="text-content flex items-center gap-1.5 font-mono text-[11px] opacity-50">
 						<Calendar size={12} class="opacity-70" />
 						{sim.fecha}
 					</div>
 
 					<button
 						onclick={(e) => handleDeleteEnvironment(sim.id, e)}
-						class="absolute top-3.5 right-3.5 rounded-md p-1.5 text-content transition-all group-hover:opacity-60 hover:bg-error-100/10 hover:text-error-100 hover:opacity-100 sm:opacity-0"
+						class="text-content hover:bg-error-100/10 hover:text-error-100 absolute top-3.5 right-3.5 rounded-md p-1.5 transition-all group-hover:opacity-60 hover:opacity-100 sm:opacity-0"
 						title="Eliminar simulación"
 					>
 						<Trash2 size={16} />

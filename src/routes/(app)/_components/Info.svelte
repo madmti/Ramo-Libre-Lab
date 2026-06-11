@@ -46,10 +46,10 @@ Usa esta información para analizar, parsear o redactar scripts válidos para es
 </script>
 
 <div
-	class="flex flex-col gap-4 rounded-xl border border-base-400 bg-base-200 p-5 font-sans shadow-sm"
+	class="border-base-400 bg-base-200 flex flex-col gap-4 rounded-xl border p-5 font-sans shadow-sm"
 >
-	<div class="flex items-center justify-between border-b border-base-400/50 pb-2">
-		<h3 class="text-xs font-semibold tracking-wide text-content uppercase opacity-60">
+	<div class="border-base-400/50 flex items-center justify-between border-b pb-2">
+		<h3 class="text-content text-xs font-semibold tracking-wide uppercase opacity-60">
 			Guía de Sintaxis
 		</h3>
 
@@ -57,8 +57,8 @@ Usa esta información para analizar, parsear o redactar scripts válidos para es
 			onclick={handleCopyPrompt}
 			class="flex cursor-pointer items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold transition-all duration-300 active:scale-[0.97]
             {copied
-				? 'border border-success-200 bg-success-100 text-white'
-				: 'border border-base-400 bg-base-300 text-content opacity-80 hover:bg-base-400/20 hover:opacity-100'}"
+				? 'border-success-200 bg-success-100 border text-white'
+				: 'border-base-400 bg-base-300 text-content hover:bg-base-400/20 border opacity-80 hover:opacity-100'}"
 		>
 			{#if copied}
 				<Check size={13} class="animate-scale-in" />
@@ -72,19 +72,19 @@ Usa esta información para analizar, parsear o redactar scripts válidos para es
 
 	<div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 		<div
-			class="flex flex-col justify-between gap-2 rounded-lg border border-base-400/50 bg-base-100/30 p-4 transition-colors hover:border-primary-100/30"
+			class="border-base-400/50 bg-base-100/30 hover:border-primary-100/30 flex flex-col justify-between gap-2 rounded-lg border p-4 transition-colors"
 		>
 			<div>
 				<span
-					class="mb-3 block text-[10px] font-bold tracking-wider text-content uppercase opacity-50"
+					class="text-content mb-3 block text-[10px] font-bold tracking-wider uppercase opacity-50"
 				>
 					Aritmética
 				</span>
-				<ul class="flex flex-col gap-2 font-mono text-sm text-content/80">
+				<ul class="text-content/80 flex flex-col gap-2 font-mono text-sm">
 					{#each [['+', 'Suma'], ['-', 'Resta'], ['*', 'Multiplicación'], ['/', 'División'], ['**', 'Potencia']] as [op, label] (op)}
 						<li class="flex items-center gap-3">
 							<span
-								class="flex h-6 min-w-6 items-center justify-center rounded bg-primary-100/10 px-1 font-bold text-primary-100"
+								class="bg-primary-100/10 text-primary-100 flex h-6 min-w-6 items-center justify-center rounded px-1 font-bold"
 							>
 								{op}
 							</span>
@@ -93,25 +93,25 @@ Usa esta información para analizar, parsear o redactar scripts válidos para es
 					{/each}
 				</ul>
 			</div>
-			<div class="mt-3 rounded bg-base-400/20 p-2 font-mono text-xs text-content/60">
+			<div class="bg-base-400/20 text-content/60 mt-3 rounded p-2 font-mono text-xs">
 				<span class="text-primary-100/60">Ej:</span> NF = PC * 0.6 + Cert ** 2 / 100
 			</div>
 		</div>
 
 		<div
-			class="flex flex-col justify-between gap-2 rounded-lg border border-base-400/50 bg-base-100/30 p-4 transition-colors hover:border-primary-100/30"
+			class="border-base-400/50 bg-base-100/30 hover:border-primary-100/30 flex flex-col justify-between gap-2 rounded-lg border p-4 transition-colors"
 		>
 			<div>
 				<span
-					class="mb-3 block text-[10px] font-bold tracking-wider text-content uppercase opacity-50"
+					class="text-content mb-3 block text-[10px] font-bold tracking-wider uppercase opacity-50"
 				>
 					Comparación y Asignación
 				</span>
-				<ul class="flex flex-col gap-2 font-mono text-sm text-content/80">
+				<ul class="text-content/80 flex flex-col gap-2 font-mono text-sm">
 					{#each [['>=', 'Mayor o igual'], ['<=', 'Menor o igual'], ['>', 'Mayor que'], ['<', 'Menor que'], ['=', 'Asignación']] as [op, label] (op)}
 						<li class="flex items-center gap-3">
 							<span
-								class="flex h-6 min-w-8 items-center justify-center rounded bg-primary-100/10 px-1 font-bold text-primary-100"
+								class="bg-primary-100/10 text-primary-100 flex h-6 min-w-8 items-center justify-center rounded px-1 font-bold"
 							>
 								{op}
 							</span>
@@ -120,25 +120,25 @@ Usa esta información para analizar, parsear o redactar scripts válidos para es
 					{/each}
 				</ul>
 			</div>
-			<div class="mt-3 rounded bg-base-400/20 p-2 font-mono text-xs text-content/60">
+			<div class="bg-base-400/20 text-content/60 mt-3 rounded p-2 font-mono text-xs">
 				<span class="text-primary-100/60">Ej:</span> PC = prom(C1, C2)
 			</div>
 		</div>
 
 		<div
-			class="flex flex-col justify-between gap-2 rounded-lg border border-base-400/50 bg-base-100/30 p-4 transition-colors hover:border-primary-100/30"
+			class="border-base-400/50 bg-base-100/30 hover:border-primary-100/30 flex flex-col justify-between gap-2 rounded-lg border p-4 transition-colors"
 		>
 			<div>
 				<span
-					class="mb-3 block text-[10px] font-bold tracking-wider text-content uppercase opacity-50"
+					class="text-content mb-3 block text-[10px] font-bold tracking-wider uppercase opacity-50"
 				>
 					Funciones
 				</span>
-				<ul class="flex flex-col gap-2 font-mono text-sm text-content/80">
+				<ul class="text-content/80 flex flex-col gap-2 font-mono text-sm">
 					{#each [['prom()', 'Promedio aritmético'], ['cada()', 'Todos deben cumplir (Mínimo)'], ['escalon()', 'Escalón unitario (1 si >= 0, sino 0)']] as [fn, label] (fn)}
 						<li class="flex items-center gap-3">
 							<span
-								class="flex h-6 items-center justify-center rounded bg-primary-100/10 px-2 text-xs font-bold text-primary-100"
+								class="bg-primary-100/10 text-primary-100 flex h-6 items-center justify-center rounded px-2 text-xs font-bold"
 							>
 								{fn}
 							</span>
@@ -148,35 +148,35 @@ Usa esta información para analizar, parsear o redactar scripts válidos para es
 				</ul>
 			</div>
 			<div class="mt-3 flex flex-col gap-1">
-				<div class="rounded bg-base-400/20 p-2 font-mono text-xs text-content/60">
+				<div class="bg-base-400/20 text-content/60 rounded p-2 font-mono text-xs">
 					<span class="text-primary-100/60">Ej:</span> cada(L1, L2, L3) >= 20
 				</div>
-				<div class="rounded bg-base-400/20 p-2 font-mono text-xs text-content/60">
+				<div class="bg-base-400/20 text-content/60 rounded p-2 font-mono text-xs">
 					<span class="text-primary-100/60">Ej:</span> Aprobado = escalon(NF - 55)
 				</div>
 			</div>
 		</div>
 
 		<div
-			class="flex flex-col justify-between gap-2 rounded-lg border border-base-400/50 bg-base-100/30 p-4 transition-colors hover:border-primary-100/30"
+			class="border-base-400/50 bg-base-100/30 hover:border-primary-100/30 flex flex-col justify-between gap-2 rounded-lg border p-4 transition-colors"
 		>
 			<div>
 				<span
-					class="mb-3 block text-[10px] font-bold tracking-wider text-content uppercase opacity-50"
+					class="text-content mb-3 block text-[10px] font-bold tracking-wider uppercase opacity-50"
 				>
 					Dominios (Límites)
 				</span>
-				<ul class="flex flex-col gap-2 font-mono text-sm text-content/80">
+				<ul class="text-content/80 flex flex-col gap-2 font-mono text-sm">
 					<li class="flex items-start gap-3">
 						<span
-							class="mt-0.5 flex h-6 shrink-0 items-center justify-center rounded bg-primary-100/10 px-2 text-xs font-bold text-primary-100"
+							class="bg-primary-100/10 text-primary-100 mt-0.5 flex h-6 shrink-0 items-center justify-center rounded px-2 text-xs font-bold"
 							>dominio</span
 						>
 						<span class="text-xs">Sintaxis clásica con corchetes</span>
 					</li>
 					<li class="flex items-start gap-3">
 						<span
-							class="mt-0.5 flex h-6 shrink-0 items-center justify-center rounded bg-primary-100/10 px-2 text-xs font-bold text-primary-100"
+							class="bg-primary-100/10 text-primary-100 mt-0.5 flex h-6 shrink-0 items-center justify-center rounded px-2 text-xs font-bold"
 							>in</span
 						>
 						<span class="text-xs">Sintaxis alternativa equivalente</span>
@@ -184,59 +184,59 @@ Usa esta información para analizar, parsear o redactar scripts válidos para es
 				</ul>
 			</div>
 			<div class="mt-3 flex flex-col gap-1">
-				<div class="rounded bg-base-400/20 p-2 font-mono text-xs text-content/60">
+				<div class="bg-base-400/20 text-content/60 rounded p-2 font-mono text-xs">
 					<span class="text-primary-100/60">Ej:</span> dominio C1, C2 [0, 100]
 				</div>
-				<div class="rounded bg-base-400/20 p-2 font-mono text-xs text-content/60">
+				<div class="bg-base-400/20 text-content/60 rounded p-2 font-mono text-xs">
 					<span class="text-primary-100/60">Ej:</span> C1, C2 in [1.0, 7.0]
 				</div>
 			</div>
 		</div>
 
 		<div
-			class="flex flex-col justify-between gap-2 rounded-lg border border-base-400/50 bg-base-100/30 p-4 transition-colors hover:border-primary-100/30"
+			class="border-base-400/50 bg-base-100/30 hover:border-primary-100/30 flex flex-col justify-between gap-2 rounded-lg border p-4 transition-colors"
 		>
 			<div>
 				<span
-					class="mb-3 block text-[10px] font-bold tracking-wider text-content uppercase opacity-50"
+					class="text-content mb-3 block text-[10px] font-bold tracking-wider uppercase opacity-50"
 				>
 					Etiquetas (Labels)
 				</span>
-				<p class="font-mono text-xs leading-relaxed text-content/70">
-					Asigna un nombre legible a cualquier regla usando <span class="font-bold text-primary-100"
+				<p class="text-content/70 font-mono text-xs leading-relaxed">
+					Asigna un nombre legible a cualquier regla usando <span class="text-primary-100 font-bold"
 						>Nombre:</span
 					> antes de la expresión. La etiqueta aparece en la UI y en el panel de estado.
 				</p>
 			</div>
 			<div class="mt-3 flex flex-col gap-1">
-				<div class="rounded bg-base-400/20 p-2 font-mono text-xs text-content/60">
+				<div class="bg-base-400/20 text-content/60 rounded p-2 font-mono text-xs">
 					<span class="text-primary-100/60">Ej:</span> Nota Final: NF = PC * 0.6
 				</div>
-				<div class="rounded bg-base-400/20 p-2 font-mono text-xs text-content/60">
+				<div class="bg-base-400/20 text-content/60 rounded p-2 font-mono text-xs">
 					<span class="text-primary-100/60">Ej:</span> Minimo Labs: cada(L1, L2) >= 20
 				</div>
 			</div>
 		</div>
 
 		<div
-			class="flex flex-col justify-between gap-2 rounded-lg border border-base-400/50 bg-base-100/30 p-4 transition-colors hover:border-primary-100/30"
+			class="border-base-400/50 bg-base-100/30 hover:border-primary-100/30 flex flex-col justify-between gap-2 rounded-lg border p-4 transition-colors"
 		>
 			<div>
 				<span
-					class="mb-3 block text-[10px] font-bold tracking-wider text-content uppercase opacity-50"
+					class="text-content mb-3 block text-[10px] font-bold tracking-wider uppercase opacity-50"
 				>
 					Variables Cultivadas / Calculadas
 				</span>
-				<p class="font-mono text-xs leading-relaxed text-content/70">
-					Una variable definida con <span class="font-bold text-primary-100">=</span> se convierte en
+				<p class="text-content/70 font-mono text-xs leading-relaxed">
+					Una variable definida con <span class="text-primary-100 font-bold">=</span> se convierte en
 					un nodo calculado. No genera slider — su valor se resuelve automáticamente.
 				</p>
 			</div>
 			<div class="mt-3 flex flex-col gap-1">
-				<div class="rounded bg-base-400/20 p-2 font-mono text-xs text-content/60">
+				<div class="bg-base-400/20 text-content/60 rounded p-2 font-mono text-xs">
 					<span class="text-primary-100/60">Ej:</span> PC = prom(C1, C2)
 				</div>
-				<div class="rounded bg-base-400/20 p-2 font-mono text-xs text-content/60">
+				<div class="bg-base-400/20 text-content/60 rounded p-2 font-mono text-xs">
 					<span class="text-primary-100/60">Ej:</span> NF = PC * 0.6 + Cert * 0.4
 				</div>
 			</div>

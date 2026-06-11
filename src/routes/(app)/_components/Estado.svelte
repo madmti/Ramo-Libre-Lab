@@ -6,8 +6,12 @@
 		evaluateExpression,
 		buildEvalContext,
 		statementDisplayName
-	} from '$lib/utils/compiler';
-	import type { ASTNode, AssignmentStatement, ConstraintStatement } from '$lib/utils/compiler';
+	} from '@ramolibre/core/dsl-parser';
+	import type {
+		ASTNode,
+		AssignmentStatement,
+		ConstraintStatement
+	} from '@ramolibre/core/dsl-parser';
 
 	let statements = $derived(parseScript(db.simulaciones.actual.scriptRaw));
 	let variables = $derived(db.simulaciones.actual.variables);
@@ -107,31 +111,31 @@
 </script>
 
 <div
-	class="box-border flex flex-col gap-4 rounded-xl border border-base-400 bg-base-200 p-6 font-sans shadow-sm"
+	class="border-base-400 bg-base-200 box-border flex flex-col gap-4 rounded-xl border p-6 font-sans shadow-sm"
 >
-	<h3 class="text-xs font-semibold tracking-wide text-content uppercase opacity-60">
+	<h3 class="text-content text-xs font-semibold tracking-wide uppercase opacity-60">
 		Estado del Sistema
 	</h3>
 
 	{#if isFactible}
 		<div
-			class="flex items-center justify-center gap-2 rounded-lg border border-success-100/30 bg-success-100/10 p-3 text-success-100 transition-colors duration-300"
+			class="border-success-100/30 bg-success-100/10 text-success-100 flex items-center justify-center gap-2 rounded-lg border p-3 transition-colors duration-300"
 		>
 			<span class="text-sm font-bold tracking-wider uppercase">Factible</span>
 		</div>
 	{:else}
 		<div
-			class="flex items-center justify-center gap-2 rounded-lg border border-error-100/30 bg-error-100/10 p-3 text-error-100 transition-colors duration-300"
+			class="border-error-100/30 bg-error-100/10 text-error-100 flex items-center justify-center gap-2 rounded-lg border p-3 transition-colors duration-300"
 		>
 			<span class="text-sm font-bold tracking-wider uppercase">Incompatible</span>
 		</div>
 	{/if}
 
 	<div
-		class="mt-1 flex flex-col items-center justify-center gap-1 border-t border-b border-base-400/50 py-6"
+		class="border-base-400/50 mt-1 flex flex-col items-center justify-center gap-1 border-t border-b py-6"
 	>
 		<span
-			class="max-w-full truncate px-4 text-center font-mono text-[10px] tracking-widest text-content/40 uppercase"
+			class="text-content/40 max-w-full truncate px-4 text-center font-mono text-[10px] tracking-widest uppercase"
 		>
 			{activeLabel}
 		</span>
@@ -144,7 +148,7 @@
 	</div>
 
 	<div class="flex flex-col gap-2">
-		<span class="text-[10px] font-bold tracking-wider text-content uppercase opacity-40">
+		<span class="text-content text-[10px] font-bold tracking-wider uppercase opacity-40">
 			Reglas
 		</span>
 		<div class="flex flex-col gap-1.5">
@@ -153,10 +157,10 @@
 					onclick={() => handleSelectStatement(res.stmt.raw)}
 					class="group flex w-full cursor-pointer items-center justify-between rounded-lg border px-3 py-2.5 text-left font-mono text-xs transition-all duration-150
 					{res.isActive
-						? 'border-primary-100/40 bg-primary-400/20 font-semibold text-primary-100'
+						? 'border-primary-100/40 bg-primary-400/20 text-primary-100 font-semibold'
 						: res.isConstraint && !res.cumplido
 							? 'border-error-100/30 bg-error-100/5 text-error-100 hover:bg-error-100/10'
-							: 'border-base-400/60 bg-base-100/40 text-content opacity-70 hover:bg-base-100 hover:opacity-100'}"
+							: 'border-base-400/60 bg-base-100/40 text-content hover:bg-base-100 opacity-70 hover:opacity-100'}"
 				>
 					<span class="truncate">{res.label}</span>
 

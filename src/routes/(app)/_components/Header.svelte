@@ -54,20 +54,20 @@
 </script>
 
 <div
-	class="flex flex-col gap-4 rounded-xl border border-base-400 bg-base-200 p-5 font-sans text-content shadow-sm sm:flex-row sm:items-center sm:justify-between"
+	class="border-base-400 bg-base-200 text-content flex flex-col gap-4 rounded-xl border p-5 font-sans shadow-sm sm:flex-row sm:items-center sm:justify-between"
 >
 	<div class="flex w-full flex-col gap-1.5 sm:max-w-3/5">
 		<h1
 			contenteditable="true"
 			onblur={handleBlur}
 			onkeydown={handleKeydown}
-			class="w-full text-lg font-bold tracking-tight text-content transition-colors outline-none focus:border-b focus:border-primary-100/30 focus:text-primary-100"
+			class="text-content focus:border-primary-100/30 focus:text-primary-100 w-full text-lg font-bold tracking-tight transition-colors outline-none focus:border-b"
 			spellcheck="false"
 		>
 			{nombreSimulacion}
 		</h1>
 
-		<div class="flex items-center gap-1.5 font-mono text-[11px] text-content opacity-50">
+		<div class="text-content flex items-center gap-1.5 font-mono text-[11px] opacity-50">
 			<Calendar size={12} class="opacity-70" />
 			{fechaSimulacion}
 		</div>
@@ -76,7 +76,7 @@
 	<div class="flex w-full items-center gap-2 sm:w-auto">
 		<button
 			onclick={handleNew}
-			class="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border border-base-400 bg-base-300 px-4 py-2 text-sm font-semibold text-content transition-all hover:bg-base-400/40 active:scale-[0.98] sm:flex-none"
+			class="border-base-400 bg-base-300 text-content hover:bg-base-400/40 flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border px-4 py-2 text-sm font-semibold transition-all active:scale-[0.98] sm:flex-none"
 		>
 			<Plus size={15} />
 			<span>Nueva</span>
@@ -84,7 +84,7 @@
 
 		<button
 			onclick={handleSave}
-			class="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg bg-content px-4 py-2 text-sm font-semibold text-base-100 transition-all hover:opacity-90 active:scale-[0.98] sm:flex-none"
+			class="bg-content text-base-100 flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-all hover:opacity-90 active:scale-[0.98] sm:flex-none"
 		>
 			<Save size={15} />
 			<span>Guardar</span>

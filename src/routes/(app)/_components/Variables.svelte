@@ -1,6 +1,11 @@
 <script lang="ts">
 	import { db } from '$lib/state/index.svelte';
-	import { parseScript, extractFreeVariables, extractDomains, clamp } from '$lib/utils/compiler';
+	import {
+		parseScript,
+		extractFreeVariables,
+		extractDomains,
+		clamp
+	} from '@ramolibre/core/dsl-parser';
 
 	type Precision = { label: string; step: number };
 	const PRECISIONS: Precision[] = [
@@ -34,11 +39,11 @@
 	}
 </script>
 
-<div class="flex flex-col gap-4 rounded-xl border border-base-400 bg-base-200 p-5 shadow-sm">
+<div class="border-base-400 bg-base-200 flex flex-col gap-4 rounded-xl border p-5 shadow-sm">
 	<div class="flex items-center justify-between">
-		<h3 class="text-xs font-bold tracking-wide text-content uppercase opacity-60">Variables</h3>
+		<h3 class="text-content text-xs font-bold tracking-wide uppercase opacity-60">Variables</h3>
 
-		<div class="flex gap-0.5 rounded-lg bg-base-300 p-0.5">
+		<div class="bg-base-300 flex gap-0.5 rounded-lg p-0.5">
 			{#each PRECISIONS as p, i (i)}
 				<button
 					onclick={() => (precisionIdx = i)}
@@ -58,8 +63,8 @@
 			{@const lim = mapaDominios[varName] ?? { min: 0, max: 100 }}
 			{@const value = effectiveValue(varName, lim.min, lim.max)}
 
-			<div class="flex items-center gap-3 rounded-lg border border-base-400/50 bg-base-100/50 p-3">
-				<span class="w-8 shrink-0 font-mono font-bold text-content">{varName}</span>
+			<div class="border-base-400/50 bg-base-100/50 flex items-center gap-3 rounded-lg border p-3">
+				<span class="text-content w-8 shrink-0 font-mono font-bold">{varName}</span>
 
 				<input
 					type="range"
@@ -68,7 +73,7 @@
 					{step}
 					{value}
 					oninput={(e) => handleRangeInput(varName, e, lim.min, lim.max)}
-					class="flex-1 accent-primary-100"
+					class="accent-primary-100 flex-1"
 				/>
 
 				<input
@@ -78,7 +83,7 @@
 					{step}
 					{value}
 					onchange={(e) => handleNumberChange(varName, e, lim.min, lim.max)}
-					class="no-spinner w-14 rounded border border-base-400 bg-base-100 p-1 text-center font-mono text-sm text-content focus:border-primary-100 focus:outline-none"
+					class="no-spinner border-base-400 bg-base-100 text-content focus:border-primary-100 w-14 rounded border p-1 text-center font-mono text-sm focus:outline-none"
 				/>
 			</div>
 		{:else}

@@ -98,11 +98,11 @@ export class SimulacionesManager implements Serializable<SimulacionesSerial> {
 
 	get all() {
 		return this._simulaciones;
-    }
+	}
 
-    resetActual() {
-        this._actual = getDefaultSimulacion();
-    }
+	resetActual() {
+		this._actual = getDefaultSimulacion();
+	}
 
 	saveActual() {
 		const isNew = this._actual.id === NO_USABLE_ID;

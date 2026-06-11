@@ -14,12 +14,12 @@
 <Header />
 
 <div class="my-4 flex w-full md:max-w-sm">
-	<div class="flex flex-1 gap-1 rounded-lg bg-base-300 p-1 text-sm font-medium">
+	<div class="bg-base-300 flex flex-1 gap-1 rounded-lg p-1 text-sm font-medium">
 		<button
 			onclick={() => (activeTab = 'simular')}
 			class="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-md py-2 text-center transition-all duration-150
             {activeTab === 'simular'
-				? 'bg-base-100 font-semibold text-content shadow-sm'
+				? 'bg-base-100 text-content font-semibold shadow-sm'
 				: 'text-content opacity-60 hover:opacity-100'}"
 		>
 			<Play size={16} /> Playground
@@ -28,7 +28,7 @@
 			onclick={() => (activeTab = 'ayuda')}
 			class="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-md py-2 text-center transition-all duration-150
             {activeTab === 'ayuda'
-				? 'bg-base-100 font-semibold text-content shadow-sm'
+				? 'bg-base-100 text-content font-semibold shadow-sm'
 				: 'text-content opacity-60 hover:opacity-100'}"
 		>
 			<BookOpen size={16} /> Sintaxis

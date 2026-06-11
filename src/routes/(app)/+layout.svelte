@@ -17,7 +17,7 @@
 <div class="relative flex h-screen w-screen overflow-hidden md:grid md:grid-cols-[340px_1fr]">
 	<button
 		onclick={() => (isMobileMenuOpen = !isMobileMenuOpen)}
-		class="fixed right-5 bottom-5 z-50 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border border-base-400/20 bg-primary-100 text-white shadow-lg transition-transform active:scale-95 md:hidden"
+		class="border-base-400/20 bg-primary-100 fixed right-5 bottom-5 z-50 flex h-12 w-12 cursor-pointer items-center justify-center rounded-full border text-white shadow-lg transition-transform active:scale-95 md:hidden"
 	>
 		{#if isMobileMenuOpen}
 			<X size={20} />
@@ -31,7 +31,7 @@
 			onclick={() => (isMobileMenuOpen = false)}
 			onkeydown={(e) => e.key === 'Escape' && (isMobileMenuOpen = false)}
 			role="presentation"
-			class="fixed inset-0 z-40 bg-base-400/40 backdrop-blur-sm transition-opacity md:hidden"
+			class="bg-base-400/40 fixed inset-0 z-40 backdrop-blur-sm transition-opacity md:hidden"
 		></div>
 	{/if}
 

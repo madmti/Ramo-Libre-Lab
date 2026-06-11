@@ -1,5 +1,5 @@
 import type { Serializable } from '$lib/types/state';
-import { themes, type Theme } from '$lib/utils/themes';
+import { themes, type Theme } from '@ramolibre/core/ui-themes';
 
 export interface PreferencesSerial {
 	theme: Theme;

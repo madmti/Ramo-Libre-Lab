@@ -43,21 +43,21 @@
 	}
 </script>
 
-<div class="flex shrink-0 flex-col gap-4 rounded-xl border border-base-400 bg-base-200 p-4">
+<div class="border-base-400 bg-base-200 flex shrink-0 flex-col gap-4 rounded-xl border p-4">
 	<div>
-		<p class="mb-2 text-xs font-semibold tracking-wide text-content uppercase opacity-60">
+		<p class="text-content mb-2 text-xs font-semibold tracking-wide uppercase opacity-60">
 			Datos locales
 		</p>
 		<div class="flex flex-col gap-2">
 			<button
 				onclick={handleExport}
-				class="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border border-base-400 bg-base-100 p-2.5 text-xs font-bold text-content transition-all hover:bg-base-300"
+				class="border-base-400 bg-base-100 text-content hover:bg-base-300 flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border p-2.5 text-xs font-bold transition-all"
 			>
 				<Download size={16} /> Exportar JSON
 			</button>
 
 			<label
-				class="flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border border-base-400 bg-base-100 p-2.5 text-center text-xs font-bold text-content transition-all hover:bg-base-300"
+				class="border-base-400 bg-base-100 text-content hover:bg-base-300 flex flex-1 cursor-pointer items-center justify-center gap-2 rounded-lg border p-2.5 text-center text-xs font-bold transition-all"
 			>
 				<Upload size={16} /> Importar JSON
 				<input type="file" accept=".json" class="hidden" onchange={handleImport} />
@@ -65,7 +65,7 @@
 
 			<button
 				onclick={handleClearAllData}
-				class="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-error-100/20 bg-error-100/5 p-3 text-center text-xs font-bold text-error-100 transition-all hover:bg-error-100 hover:text-white active:scale-[0.99]"
+				class="border-error-100/20 bg-error-100/5 text-error-100 hover:bg-error-100 flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg border p-3 text-center text-xs font-bold transition-all hover:text-white active:scale-[0.99]"
 			>
 				<Trash2 size={16} /> Borrar todos los datos
 			</button>

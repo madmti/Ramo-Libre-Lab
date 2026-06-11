@@ -1,7 +1,6 @@
 <script lang="ts">
-	import './layout.css';
-	import './custom.css';
-	import favicon from '$lib/assets/favicon.svg';
+	import '@ramolibre/core/ui-themes/tailwind.css';
+	import { SuiteFavicons } from '@ramolibre/core/ui-themes';
 
 	let { children } = $props();
 
@@ -18,9 +17,9 @@
 <svelte:head>
 	<title>RamoLibre LAB</title>
 	<meta name="theme-color" content="#ffffff" id="theme-meta" />
-	<link rel="icon" href={favicon} />
+	<link rel="icon" href={SuiteFavicons.lab} />
 </svelte:head>
 
-<div class="h-dvh w-full text-content">
+<div class="text-content h-dvh w-full">
 	{@render children()}
 </div>
