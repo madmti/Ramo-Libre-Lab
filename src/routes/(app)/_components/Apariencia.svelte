@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { db } from '$lib';
-	import { themes } from '@ramolibre/core/ui-themes';
+	import { themes } from '@ramo-libre/ui-themes';
 </script>
 
 <div class="border-base-400 bg-base-200 flex shrink-0 flex-col gap-3 rounded-xl border p-4">

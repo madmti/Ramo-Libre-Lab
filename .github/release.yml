@@ -11,35 +11,17 @@ changelog:
     - title: "Features"
       labels:
         - "Funcionalidad"
-      title-fragments:
-        - "feat:"
-        - "feat("
 
     - title: "Fixes"
       labels:
         - "Bug"
         - "Fix"
-      title-fragments:
-        - "fix:"
-        - "fix("
 
     - title: "Maintenance"
       labels:
         - "Test"
         - "Tarea Tecnica"
-      title-fragments:
-        - "chore:"
-        - "chore("
-        - "docs:"
-        - "docs("
-        - "refactor:"
-        - "refactor("
-        - "test:"
-        - "test("
 
     - title: "Other Changes"
       labels:
         - "*"
-      title-fragments:
-        - "!"
-        - "BREAKING CHANGE:"

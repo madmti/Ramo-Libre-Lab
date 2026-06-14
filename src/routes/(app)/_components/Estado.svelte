@@ -6,12 +6,8 @@
 		evaluateExpression,
 		buildEvalContext,
 		statementDisplayName
-	} from '@ramolibre/core/dsl-parser';
-	import type {
-		ASTNode,
-		AssignmentStatement,
-		ConstraintStatement
-	} from '@ramolibre/core/dsl-parser';
+	} from '@ramo-libre/dsl-parser';
+	import type { ASTNode, AssignmentStatement, ConstraintStatement } from '@ramo-libre/dsl-parser';
 
 	let statements = $derived(parseScript(db.simulaciones.actual.scriptRaw));
 	let variables = $derived(db.simulaciones.actual.variables);

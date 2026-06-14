@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { SuiteFavicons } from '@ramolibre/core/ui-themes';
+	import { SuiteFavicons } from '@ramo-libre/ui-themes';
 	import { VERSION } from '$lib/utils/version';
 	import { decodeUrlData, encodeUrlData } from '$lib/utils/url_data';
 	import type { Simulacion } from '$lib/state/simulaciones.svelte';

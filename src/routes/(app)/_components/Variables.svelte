@@ -1,11 +1,6 @@
 <script lang="ts">
 	import { db } from '$lib/state/index.svelte';
-	import {
-		parseScript,
-		extractFreeVariables,
-		extractDomains,
-		clamp
-	} from '@ramolibre/core/dsl-parser';
+	import { parseScript, extractFreeVariables, extractDomains, clamp } from '@ramo-libre/dsl-parser';
 
 	type Precision = { label: string; step: number };
 	const PRECISIONS: Precision[] = [

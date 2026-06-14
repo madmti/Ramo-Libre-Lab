@@ -4,12 +4,12 @@
 	import katex from 'katex';
 	import 'katex/dist/katex.min.css';
 
-	import { parseScript, toLatex, statementDisplayName } from '@ramolibre/core/dsl-parser';
+	import { parseScript, toLatex, statementDisplayName } from '@ramo-libre/dsl-parser';
 	import type {
 		StatementNode,
 		AssignmentStatement,
 		ConstraintStatement
-	} from '@ramolibre/core/dsl-parser';
+	} from '@ramo-libre/dsl-parser';
 
 	let modoInput = $state<'visual' | 'script'>(db.simulaciones.actual.modo ?? 'visual');
 	let dslInput = $state('');

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { db } from '$lib/state/index.svelte';
-	import { parseScript } from '@ramolibre/core/dsl-parser';
-	import type { DomainStatement } from '@ramolibre/core/dsl-parser';
+	import { parseScript } from '@ramo-libre/dsl-parser';
+	import type { DomainStatement } from '@ramo-libre/dsl-parser';
 	import { Trash2 } from '@lucide/svelte';
 
 	let statements = $derived(parseScript(db.simulaciones.actual.scriptRaw));

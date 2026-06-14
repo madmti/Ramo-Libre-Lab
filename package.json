@@ -1,5 +1,5 @@
 {
-	"name": "ramo-libre-lab",
+	"name": "@ramo-libre/lab",
 	"private": true,
 	"version": "X.X.X",
 	"type": "module",
@@ -18,7 +18,8 @@
 		"@eslint/js": "^10.0.1",
 		"@iconify/svelte": "^5.2.1",
 		"@lucide/svelte": "^1.17.0",
-		"@ramolibre/core": "github:madmti/Ramo-Libre-Core",
+		"@ramo-libre/dsl-parser": "^1.0.0",
+		"@ramo-libre/ui-themes": "^1.0.0",
 		"@sveltejs/adapter-static": "^3.0.10",
 		"@sveltejs/kit": "^2.57.0",
 		"@sveltejs/vite-plugin-svelte": "^7.0.0",

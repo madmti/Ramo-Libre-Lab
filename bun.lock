@@ -9,7 +9,8 @@
         "@eslint/js": "^10.0.1",
         "@iconify/svelte": "^5.2.1",
         "@lucide/svelte": "^1.17.0",
-        "@ramolibre/core": "github:madmti/Ramo-Libre-Core?path=.",
+        "@ramo-libre/dsl-parser": "^1.0.0",
+        "@ramo-libre/ui-themes": "^1.0.0",
         "@sveltejs/adapter-static": "^3.0.10",
         "@sveltejs/kit": "^2.57.0",
         "@sveltejs/vite-plugin-svelte": "^7.0.0",
@@ -91,7 +92,9 @@
 
     "@polka/url": ["@polka/url@1.0.0-next.29", "", {}, "sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww=="],
 
-    "@ramolibre/core": ["@ramolibre/core@github:madmti/Ramo-Libre-Core#183c5d7", { "peerDependencies": { "typescript": "^5" } }, "madmti-Ramo-Libre-Core-183c5d7", "sha512-PoQYah+/2VevFhe7t0r52hsCkmEiIhBq8UsrfkjkQhIVmw9SUD7RL0oNDzP8SiAKpSs76Ns07Aw6L57JZuS2jw=="],
+    "@ramo-libre/dsl-parser": ["@ramo-libre/dsl-parser@1.0.0", "https://npm.pkg.github.com/download/@ramo-libre/dsl-parser/1.0.0/951426ab708a2e4f78506d954367d6c947ea2bdc", { "dependencies": { "decimal.js": "^10.6.0" }, "peerDependencies": { "typescript": "^5" } }, "sha512-iSFBonhoV33ueVpEEgVwhxHKlzCm5wl0iyLRPrY3QTlOhfzCj8kSiJLhILTdcbsqb9CYmKb3dIWAuH+PgiSbgQ=="],
+
+    "@ramo-libre/ui-themes": ["@ramo-libre/ui-themes@1.0.0", "https://npm.pkg.github.com/download/@ramo-libre/ui-themes/1.0.0/f03dbac5a72e6a8e94d3b9f3bb216f5834df85cf", { "dependencies": { "@lucide/svelte": "^1.17.0" }, "peerDependencies": { "typescript": "^5" } }, "sha512-wNfJk6v/uHvcYijIYjUuv3IkiGwZRYF8bqnLIrPMQ4NKr8MqzJf16wlZsG4uIDTEZkhNhZTYhbql58353rkyqQ=="],
 
     "@rolldown/binding-android-arm64": ["@rolldown/binding-android-arm64@1.0.3", "", { "os": "android", "cpu": "arm64" }, "sha512-454rs7jHngixp/NMxd5srYD57OnzSlZ/eFTETjORQHLwJG1lRtmNOJcBerZlfu4GjKqeq8aCCIQrMdHyhI51Hw=="],
 

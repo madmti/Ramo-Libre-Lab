@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { db } from '$lib/state/index.svelte';
-	import { parseScript, buildEvalContext } from '@ramolibre/core/dsl-parser';
-	import type { AssignmentStatement } from '@ramolibre/core/dsl-parser';
+	import { parseScript, buildEvalContext } from '@ramo-libre/dsl-parser';
+	import type { AssignmentStatement } from '@ramo-libre/dsl-parser';
 
 	let statements = $derived(parseScript(db.simulaciones.actual.scriptRaw));
 	let variables = $derived(db.simulaciones.actual.variables);

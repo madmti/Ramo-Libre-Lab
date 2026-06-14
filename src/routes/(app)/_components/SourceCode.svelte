@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ramolibreicon from '$lib/assets/ramolibre.webp';
+	import { SuiteFavicons } from '@ramo-libre/ui-themes';
 	import Icon from '@iconify/svelte';
 	import { Globe } from '@lucide/svelte';
 </script>
@@ -32,7 +32,7 @@
 		rel="noopener noreferrer"
 		class="bg-primary-100 flex cursor-pointer items-center justify-center gap-1.5 rounded-lg p-2 text-center text-xs font-semibold text-white transition-all hover:opacity-95 active:scale-[0.98]"
 	>
-		<img src={ramolibreicon} alt="RamoLibre Logo" class="h-4 w-4" />
+		<img src={SuiteFavicons.web} alt="RamoLibre Logo" class="h-4 w-4" />
 		<span>Probar RamoLibre</span>
 	</a>
 </div>
