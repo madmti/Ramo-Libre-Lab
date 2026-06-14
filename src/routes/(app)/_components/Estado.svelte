@@ -161,7 +161,7 @@
 					<span class="truncate">{res.label}</span>
 
 					<div class="ml-2 flex shrink-0 items-center gap-2">
-						{#if res.isConstraint && res.umbral !== null}
+						{#if res.stmt.type === 'constraint' && res.umbral !== null}
 							<span class="text-[10px] opacity-60">
 								{res.valorActual}
 								{res.stmt.operator}
